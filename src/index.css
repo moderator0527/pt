@@ -2,71 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* 감PT Design System */
 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 7%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 7%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 7%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 161 82% 35%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 7%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 33%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 161 72% 45%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --success: 142 72% 46%;
+    --success-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 7%;
+
+    --border: 0 0% 87%;
+    --input: 0 0% 87%;
+    --ring: 161 82% 35%;
+
+    --radius: 0.75rem;
+
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
+    --sidebar-primary: 161 82% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 161 72% 95%;
+    --sidebar-accent-foreground: 161 82% 25%;
     --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 161 82% 35%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222 47% 5%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 222 47% 8%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 222 47% 8%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 161 72% 45%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -74,23 +76,30 @@ All colors MUST be HSL.
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 161 72% 35%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
+    --success: 142 62% 36%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 38 72% 40%;
+    --warning-foreground: 210 40% 98%;
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 161 72% 45%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 161 72% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-accent: 161 50% 15%;
+    --sidebar-accent-foreground: 161 72% 70%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 161 72% 45%;
   }
 }
 
@@ -101,5 +110,89 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: Pretendard, ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "맑은 고딕", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .orb {
+    @apply w-3 h-3 rounded-full;
+    background: radial-gradient(circle at 30% 30%, hsl(161 80% 72%), hsl(var(--primary)));
+    box-shadow: 0 0 16px hsl(161 82% 35% / 0.6);
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 border border-border bg-card rounded-full px-3 py-1.5 text-xs text-foreground;
+    box-shadow: var(--shadow);
+  }
+
+  .keyword-chip {
+    @apply inline-flex px-2 py-1 rounded-full border border-dashed border-border text-xs bg-card text-foreground;
+  }
+
+  .keyword-chip.hit {
+    @apply border-primary/60 text-primary bg-primary/10 font-semibold;
+  }
+
+  .keyword-chip.missing {
+    @apply border-destructive/60 text-destructive bg-destructive/10 font-semibold;
+  }
+
+  .result-box {
+    @apply mt-3 p-3 rounded-xl border border-border;
+  }
+
+  .result-box.ok {
+    @apply bg-primary/10 border-primary/40;
+  }
+
+  .result-box.bad {
+    @apply bg-destructive/10 border-destructive/40;
+  }
+
+  .kbd {
+    @apply font-mono bg-card px-1.5 py-0.5 rounded-md border border-primary text-xs text-primary;
+    box-shadow: 0 0 6px hsl(161 82% 35% / 0.4);
+  }
+
+  .sidebar-item {
+    @apply w-full text-left rounded-full border border-border px-3 py-2 text-sm bg-muted cursor-pointer;
+    @apply transition-all duration-150;
+  }
+
+  .sidebar-item:hover {
+    @apply bg-secondary -translate-y-0.5;
+    box-shadow: var(--shadow);
+  }
+
+  .sidebar-item.active {
+    @apply border-accent bg-accent/15 text-primary font-semibold -translate-y-0.5;
+    box-shadow: 0 0 6px hsl(161 82% 45% / 0.6), 0 0 12px hsl(161 82% 45% / 0.4);
+  }
+
+  .user-chip {
+    @apply flex items-center gap-2 px-3 py-1.5 border border-border rounded-full bg-card text-sm;
+  }
+
+  .auth-btn {
+    @apply appearance-none border border-primary bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-bold cursor-pointer transition-all duration-200 leading-none;
+  }
+
+  .auth-btn.outline {
+    @apply bg-card text-primary;
+  }
+
+  .auth-btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .quiz-blank {
+    @apply inline-block w-auto min-w-[5em] px-1 mx-0.5 text-sm leading-tight border-0 border-b-2 border-foreground/40 rounded-none bg-transparent text-left;
+  }
+
+  .quiz-blank:focus {
+    @apply outline-none border-b-primary;
   }
 }

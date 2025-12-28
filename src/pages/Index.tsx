@@ -14,6 +14,7 @@ const Index = () => {
     totalQuestions,
     isShuffled,
     selectedUnit,
+    isLoading,
     goToQuestion,
     goNext,
     goPrev,
@@ -57,6 +58,22 @@ const Index = () => {
       }
     }
   }, [isMyListMode, showAll, showOnlySaved]);
+
+  if (isLoading) {
+    return (
+      <>
+        <Helmet>
+          <title>감PT - 회계감사 공부의 동반자</title>
+        </Helmet>
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            <div className="orb w-12 h-12 mx-auto mb-4 animate-pulse" />
+            <p className="text-muted-foreground">문제 데이터를 불러오는 중...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

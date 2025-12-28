@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { DATA, Question } from '@/data/questions';
+import { getData, loadQuestionsFromHTML, isDataLoaded, Question } from '@/data/questions';
 
 const STORAGE_KEY = 'gampt_state_v1';
 
@@ -18,7 +18,19 @@ interface QuizState {
   saved: { [key: number]: boolean };
 }
 
-const getInitialState = (): QuizState => {
+const createInitialState = (dataLength: number): QuizState => {
+  const baseOrder = Array.from({ length: dataLength }, (_, i) => i);
+  return {
+    order: baseOrder,
+    fullOrder: baseOrder,
+    idx: 0,
+    stats: {},
+    answers: {},
+    saved: {}
+  };
+};
+
+const getStoredState = (): QuizState | null => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -30,35 +42,57 @@ const getInitialState = (): QuizState => {
   } catch (e) {
     console.warn('Failed to load state from localStorage');
   }
-  
-  const baseOrder = Array.from(DATA.keys());
-  return {
-    order: baseOrder,
-    fullOrder: baseOrder,
-    idx: 0,
-    stats: {},
-    answers: {},
-    saved: {}
-  };
+  return null;
 };
 
 export const useQuizState = () => {
-  const [state, setState] = useState<QuizState>(getInitialState);
+  const [state, setState] = useState<QuizState>(createInitialState(0));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isShuffled, setIsShuffled] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [dataReady, setDataReady] = useState(false);
+
+  // Load data from HTML file on mount
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      await loadQuestionsFromHTML();
+      
+      const data = getData();
+      if (data.length > 0) {
+        const storedState = getStoredState();
+        
+        if (storedState && storedState.order.length > 0 && storedState.order.every(i => i < data.length)) {
+          // Validate stored order against current data length
+          setState(storedState);
+        } else {
+          // Create fresh state
+          setState(createInitialState(data.length));
+        }
+        setDataReady(true);
+      }
+      setIsLoading(false);
+    };
+    
+    loadData();
+  }, []);
 
   // Save state to localStorage
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch (e) {
-      console.warn('Failed to save state to localStorage');
+    if (dataReady) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn('Failed to save state to localStorage');
+      }
     }
-  }, [state]);
+  }, [state, dataReady]);
 
-  const currentQuestion: Question | null = state.order.length > 0 
-    ? DATA[state.order[currentIndex]] || null 
+  const data = getData();
+  
+  const currentQuestion: Question | null = state.order.length > 0 && data.length > 0
+    ? data[state.order[currentIndex]] || null 
     : null;
 
   const totalQuestions = state.order.length;
@@ -82,10 +116,11 @@ export const useQuizState = () => {
   }, [currentIndex]);
 
   const filterByUnit = useCallback((unit: string) => {
+    const currentData = getData();
     setSelectedUnit(unit);
-    const allIdx = Array.from(DATA.keys());
+    const allIdx = Array.from({ length: currentData.length }, (_, i) => i);
     const filtered = unit 
-      ? allIdx.filter(i => DATA[i]?.unit === unit)
+      ? allIdx.filter(i => currentData[i]?.unit === unit)
       : allIdx;
     
     setState(prev => ({
@@ -98,10 +133,11 @@ export const useQuizState = () => {
   }, []);
 
   const toggleShuffle = useCallback(() => {
+    const currentData = getData();
     if (isShuffled) {
       // Restore original order
       const ordered = selectedUnit
-        ? state.fullOrder.filter(id => DATA[id]?.unit === selectedUnit)
+        ? state.fullOrder.filter(id => currentData[id]?.unit === selectedUnit)
         : state.fullOrder;
       
       setState(prev => ({
@@ -198,6 +234,7 @@ export const useQuizState = () => {
     totalQuestions,
     isShuffled,
     selectedUnit,
+    isLoading,
     goToQuestion,
     goNext,
     goPrev,

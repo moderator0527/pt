@@ -121,6 +121,7 @@ const Index = () => {
               isSaved={currentQuestionId >= 0 ? isSaved(currentQuestionId) : false}
               onGrade={handleGrade}
               onToggleSave={handleToggleSave}
+              onNext={goNext}
             />
 
             <QuestionList

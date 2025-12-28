@@ -18,14 +18,18 @@ interface GradeResult {
   hits: string[];
   misses: string[];
   message: string;
-  isCorrect: boolean;
+  score: number; // 0, 50, 75, 100
 }
 
-const escapeRegExp = (str: string) => {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+// 엄격한 정규화: 공백 및 특수문자 제거
+const normalizeStrict = (s: string) => {
+  return s
+    .toLowerCase()
+    .replace(/\s+/g, '')
+    .replace(/[^\p{L}\p{N}]/gu, '');
 };
 
-const gradeAnswer = (answer: string, keywords: string[]): GradeResult => {
+const gradeAnswer = (answer: string, keywords: string[], criteria: string): GradeResult => {
   const normalized = answer.toLowerCase().replace(/\s+/g, '');
   const hits: string[] = [];
   const misses: string[] = [];
@@ -39,19 +43,28 @@ const gradeAnswer = (answer: string, keywords: string[]): GradeResult => {
     }
   });
 
-  let message = '';
-  let isCorrect = false;
+  // 정답과 완전 일치 여부 확인
+  const critMatch = criteria ? (normalizeStrict(answer) === normalizeStrict(criteria)) : false;
 
-  if (keywords.length && misses.length === 0) {
-    message = '정답입니다! 🎉';
-    isCorrect = true;
-  } else if (hits.length > 0) {
-    message = '일부 키워드는 맞았지만, 아직 빠진 내용이 있어요.';
+  // 점수 계산: 0/50/75/100
+  let score = 0;
+  let message = '';
+
+  if (hits.length === 0) {
+    score = 0;
+    message = '❌ 키워드가 모두 빠져있어요 😭';
+  } else if (misses.length > 0) {
+    score = 50;
+    message = '🔶 일부 키워드가 빠져있어요!';
+  } else if (!critMatch) {
+    score = 75;
+    message = '✔️ 키워드가 모두 포함되었어요! 완벽에 도전해 볼까요?';
   } else {
-    message = '키워드가 거의 보이지 않아요. 기준서를 다시 확인해 보세요.';
+    score = 100;
+    message = '✅ 완벽하게 암기하셨어요!';
   }
 
-  return { hits, misses, message, isCorrect };
+  return { hits, misses, message, score };
 };
 
 export const QuestionCard = ({
@@ -86,15 +99,11 @@ export const QuestionCard = ({
       return;
     }
     
-    const gradeResult = gradeAnswer(answer, question.keywords);
+    const gradeResult = gradeAnswer(answer, question.keywords, question.criteria);
     setResult(gradeResult);
     setShowKeywords(true); // 채점 후 키워드 자동 표시
     
-    const score = question.keywords.length > 0 
-      ? Math.round((gradeResult.hits.length / question.keywords.length) * 100)
-      : 0;
-    
-    onGrade(gradeResult.hits, gradeResult.misses, score);
+    onGrade(gradeResult.hits, gradeResult.misses, gradeResult.score);
   }, [answer, question, onGrade, result]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -205,7 +214,7 @@ export const QuestionCard = ({
           {result && (
             <div className={cn(
               "result-box",
-              result.isCorrect ? "ok" : "bad"
+              result.score >= 75 ? "ok" : "bad"
             )}>
               {result.message}
             </div>

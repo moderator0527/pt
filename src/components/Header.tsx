@@ -1,4 +1,4 @@
-import { Menu } from 'lucide-react';
+import { Menu, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getUniqueUnits, getData } from '@/data/questions';
 
@@ -6,11 +6,9 @@ interface HeaderProps {
   currentIndex: number;
   totalQuestions: number;
   selectedUnit: string;
-  isShuffled: boolean;
   onUnitChange: (unit: string) => void;
   onPrev: () => void;
   onNext: () => void;
-  onShuffle: () => void;
   onMenuClick: () => void;
 }
 
@@ -18,11 +16,9 @@ export const Header = ({
   currentIndex,
   totalQuestions,
   selectedUnit,
-  isShuffled,
   onUnitChange,
   onPrev,
   onNext,
-  onShuffle,
   onMenuClick
 }: HeaderProps) => {
   const data = getData();
@@ -75,10 +71,11 @@ export const Header = ({
             <Button 
               variant="outline" 
               size="sm" 
-              onClick={onShuffle}
-              className="hidden sm:inline-flex"
+              onClick={() => window.open('https://melodious-virgo-658.notion.site/PT-Personal-Training-Beta-279519deaa6280c985cdd6fccce1de67?pvs=143', '_blank')}
+              className="hidden sm:inline-flex gap-1"
             >
-              {isShuffled ? '랜덤화 해제' : '랜덤화'}
+              <HelpCircle className="h-4 w-4" />
+              도움말
             </Button>
 
             <Button variant="ghost" size="icon" onClick={onMenuClick}>

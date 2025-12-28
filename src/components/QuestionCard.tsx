@@ -76,6 +76,14 @@ export const QuestionCard = ({
 
   const handleGrade = useCallback(() => {
     if (!question) return;
+    
+    // 이미 결과가 표시된 상태면 모두 숨기기
+    if (result) {
+      setResult(null);
+      setShowKeywords(false);
+      return;
+    }
+    
     const gradeResult = gradeAnswer(answer, question.keywords);
     setResult(gradeResult);
     setShowKeywords(true); // 채점 후 키워드 자동 표시
@@ -85,7 +93,7 @@ export const QuestionCard = ({
       : 0;
     
     onGrade(gradeResult.hits, gradeResult.misses, score);
-  }, [answer, question, onGrade]);
+  }, [answer, question, onGrade, result]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {

@@ -91,11 +91,9 @@ const Index = () => {
           currentIndex={currentIndex}
           totalQuestions={totalQuestions}
           selectedUnit={selectedUnit}
-          isShuffled={isShuffled}
           onUnitChange={filterByUnit}
           onPrev={goPrev}
           onNext={goNext}
-          onShuffle={toggleShuffle}
           onMenuClick={() => setSidebarOpen(true)}
         />
 

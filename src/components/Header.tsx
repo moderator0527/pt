@@ -1,6 +1,6 @@
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getUniqueUnits } from '@/data/questions';
+import { getUniqueUnits, getData } from '@/data/questions';
 
 interface HeaderProps {
   currentIndex: number;
@@ -25,6 +25,7 @@ export const Header = ({
   onShuffle,
   onMenuClick
 }: HeaderProps) => {
+  const data = getData();
   const units = getUniqueUnits();
 
   return (

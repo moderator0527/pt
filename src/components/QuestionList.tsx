@@ -1,4 +1,4 @@
-import { DATA } from '@/data/questions';
+import { getData } from '@/data/questions';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -37,7 +37,8 @@ export const QuestionList = ({
           </thead>
           <tbody>
             {order.map((questionId, idx) => {
-              const question = DATA[questionId];
+              const data = getData();
+              const question = data[questionId];
               const score = stats[questionId]?.score || 0;
               const isActive = idx === currentIndex;
 

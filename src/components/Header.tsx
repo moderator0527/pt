@@ -75,7 +75,7 @@ export const Header = ({
               className="hidden sm:inline-flex gap-1"
             >
               <HelpCircle className="h-4 w-4" />
-              도움말
+              도움말 (노션)
             </Button>
 
             <Button variant="ghost" size="icon" onClick={onMenuClick}>

@@ -197,7 +197,7 @@ export const QuestionCard = ({
             </Button>
             <div className="flex-1" />
             <span className="text-xs text-muted-foreground hidden sm:inline">
-              단축키: <span className="kbd">Enter</span> 채점 · <span className="kbd">Ctrl+Enter</span> 다음 · <span className="kbd">Shift+Enter</span> 줄바꿈
+              단축키: <span className="kbd">Ctrl+Enter</span> 다음
             </span>
           </div>
 

@@ -66,14 +66,14 @@ export const Header = ({
               현재 <strong>{totalQuestions > 0 ? currentIndex + 1 : 0}</strong> / <strong>{totalQuestions}</strong>
             </span>
 
-            <Button variant="ghost" size="sm" onClick={onPrev} className="hidden sm:inline-flex">
+            <Button variant="outline" size="sm" onClick={onPrev} className="hidden sm:inline-flex">
               이전
             </Button>
             <Button variant="default" size="sm" onClick={onNext} className="hidden sm:inline-flex">
               다음
             </Button>
             <Button 
-              variant="ghost" 
+              variant="outline" 
               size="sm" 
               onClick={onShuffle}
               className="hidden sm:inline-flex"

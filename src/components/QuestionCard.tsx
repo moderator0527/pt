@@ -154,14 +154,14 @@ export const QuestionCard = ({
               {showAnswer ? '정답 숨기기' : '정답 보기'}
             </Button>
             <Button 
-              variant="ghost" 
+              variant="outline" 
               size="sm"
               onClick={() => setShowKeywords(!showKeywords)}
             >
               {showKeywords ? '키워드 숨기기' : '키워드 보기'}
             </Button>
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
               onClick={onToggleSave}
             >
@@ -184,13 +184,13 @@ export const QuestionCard = ({
           <div className="flex flex-wrap items-center gap-2 mt-3">
             <Button onClick={handleGrade}>채점 (Enter)</Button>
             <Button 
-              variant="ghost"
+              variant="outline"
               onClick={() => setShowKeywords(!showKeywords)}
             >
               {showKeywords ? '키워드 숨기기' : '키워드 보기'}
             </Button>
             <Button
-              variant="ghost"
+              variant="outline"
               onClick={onToggleSave}
             >
               {isSaved ? '저장된 목록에서 제거' : '이 문제 저장하기'}

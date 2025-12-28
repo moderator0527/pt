@@ -78,6 +78,7 @@ export const QuestionCard = ({
     if (!question) return;
     const gradeResult = gradeAnswer(answer, question.keywords);
     setResult(gradeResult);
+    setShowKeywords(true); // 채점 후 키워드 자동 표시
     
     const score = question.keywords.length > 0 
       ? Math.round((gradeResult.hits.length / question.keywords.length) * 100)

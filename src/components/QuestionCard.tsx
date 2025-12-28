@@ -191,7 +191,7 @@ export const QuestionCard = ({
           />
           
           <div className="flex flex-wrap items-center gap-2 mt-3">
-            <Button onClick={handleGrade}>채점 (Enter)</Button>
+            <Button onClick={handleGrade}>{result ? '정답 숨기기' : '채점 (Enter)'}</Button>
             <Button 
               variant="outline"
               onClick={() => setShowKeywords(!showKeywords)}

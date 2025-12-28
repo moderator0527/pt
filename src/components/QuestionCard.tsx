@@ -11,6 +11,7 @@ interface QuestionCardProps {
   isSaved: boolean;
   onGrade: (hits: string[], misses: string[], score: number) => void;
   onToggleSave: () => void;
+  onNext: () => void;
 }
 
 interface GradeResult {
@@ -59,7 +60,8 @@ export const QuestionCard = ({
   isCardMode,
   isSaved,
   onGrade,
-  onToggleSave
+  onToggleSave,
+  onNext
 }: QuestionCardProps) => {
   const [answer, setAnswer] = useState('');
   const [result, setResult] = useState<GradeResult | null>(null);
@@ -96,7 +98,10 @@ export const QuestionCard = ({
   }, [answer, question, onGrade, result]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      onNext();
+    } else if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
       e.preventDefault();
       handleGrade();
     }
@@ -192,7 +197,7 @@ export const QuestionCard = ({
             </Button>
             <div className="flex-1" />
             <span className="text-xs text-muted-foreground hidden sm:inline">
-              단축키: <span className="kbd">Enter</span> 채점 · <span className="kbd">Shift+Enter</span> 줄바꿈
+              단축키: <span className="kbd">Enter</span> 채점 · <span className="kbd">Ctrl+Enter</span> 다음 · <span className="kbd">Shift+Enter</span> 줄바꿈
             </span>
           </div>
 

@@ -22,18 +22,32 @@ export const loadQuestionsFromHTML = async (): Promise<void> => {
       const html = await response.text();
       
       // Extract DATA JSON from <script id="data-json">
-      const dataMatch = html.match(/<script id="data-json" type="application\/json">([\s\S]*?)<\/script>/);
+      // 정규식을 더 유연하게 수정 - 공백 무시
+      const dataMatch = html.match(/<script\s+id=["']data-json["']\s+type=["']application\/json["']\s*>([\s\S]*?)<\/script>/i);
       if (dataMatch && dataMatch[1]) {
         try {
-          DATA = JSON.parse(dataMatch[1].trim());
+          const parsed = JSON.parse(dataMatch[1].trim());
+          DATA = parsed;
           console.log(`Loaded ${DATA.length} questions from DATA`);
         } catch (e) {
           console.error('Failed to parse DATA JSON:', e);
         }
+      } else {
+        console.warn('DATA script tag not found, trying alternative pattern...');
+        // 대체 패턴 시도 - const DATA = [...] 형태
+        const altMatch = html.match(/const\s+DATA\s*=\s*(\[[\s\S]*?\]);/);
+        if (altMatch && altMatch[1]) {
+          try {
+            DATA = JSON.parse(altMatch[1]);
+            console.log(`Loaded ${DATA.length} questions from DATA (alt pattern)`);
+          } catch (e) {
+            console.error('Failed to parse DATA (alt):', e);
+          }
+        }
       }
       
       // Extract QUIZ_DATA JSON from <script id="quiz-data-json">
-      const quizMatch = html.match(/<script id="quiz-data-json" type="application\/json">([\s\S]*?)<\/script>/);
+      const quizMatch = html.match(/<script\s+id=["']quiz-data-json["']\s+type=["']application\/json["']\s*>([\s\S]*?)<\/script>/i);
       if (quizMatch && quizMatch[1]) {
         try {
           QUIZ_DATA = JSON.parse(quizMatch[1].trim());
